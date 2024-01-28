@@ -50,7 +50,7 @@ def split_video_ffmpeg(input_file, output_folder, target_chunk_size_MB):
         ], check=True)
 
 if __name__ == "__main__":
-    video_path = 'Tiger_3_2023_Hindi_Full_Movie_HDRip-(Filmywap.pm).mp4'  # Replace with the path to your video file
+    video_path = '../Original_chunking_Video.mp4'  # Replace with the path to your video file
     target_chunk_size_MB = 1  # Specify the target size of each chunk in megabytes
 
     split_video_ffmpeg(video_path, 'Tiger_chunks', target_chunk_size_MB)

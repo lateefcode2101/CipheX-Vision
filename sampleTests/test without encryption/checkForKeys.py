@@ -22,8 +22,8 @@ def get_pem_key_pair_from_folder(folder_path, key_type):
     raise FileNotFoundError(f"{key_type.capitalize()} key file not found in the specified folder.")
 
 if __name__ == "__main__":
-    public_key_folder_path = 'C:/Users/malateef/Desktop/MajorProject/keys/pubKey/'  # Replace with the path to your public key folder
-    private_key_folder_path = 'C:/Users/malateef/Desktop/MajorProject/keys/privKey/'  # Replace with the path to your private key folder
+    public_key_folder_path = '/keys/pubKey/'  # Replace with the path to your public key folder
+    private_key_folder_path = '/keys/privKey/'  # Replace with the path to your private key folder
 
     try:
         public_key_path = get_pem_key_pair_from_folder(public_key_folder_path, 'public')

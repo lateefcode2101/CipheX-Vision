@@ -2,6 +2,7 @@ import os
 import subprocess
 import re
 
+
 def get_video_duration(input_file):
     result = subprocess.run([
         'E:\\installs\\ffmpeg\\bin\\ffprobe.exe',
@@ -12,6 +13,7 @@ def get_video_duration(input_file):
     ], capture_output=True, text=True)
 
     return float(result.stdout.strip())
+
 
 def split_video_ffmpeg(input_file, output_folder, target_chunk_size_MB):
     # Check if the output folder exists, create it if not
@@ -49,8 +51,9 @@ def split_video_ffmpeg(input_file, output_folder, target_chunk_size_MB):
             output_file
         ], check=True)
 
+
 if __name__ == "__main__":
     video_path = 'Original_chunking_Video.mp4'  # Replace with the path to your video file
     target_chunk_size_MB = 1  # Specify the target size of each chunk in megabytes
 
-    split_video_ffmpeg(video_path, 'chunks', target_chunk_size_MB)
+    split_video_ffmpeg(video_path, ''.join(["chunks_of_", video_path])[:-4], target_chunk_size_MB)

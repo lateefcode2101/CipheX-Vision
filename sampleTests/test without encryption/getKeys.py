@@ -40,8 +40,8 @@ def get_pem_key_path(folder_path, key_type):
         return None
 
 if __name__ == "__main__":
-    public_key_folder_path = 'C:/Users/malateef/Desktop/MajorProject/keys/pubKey/'  # Replace with the path to your public key folder
-    private_key_folder_path = 'C:/Users/malateef/Desktop/MajorProject/keys/privKey/'  # Replace with the path to your private key folder
+    public_key_folder_path = '/keys/pubKey/'  # Replace with the path to your public key folder
+    private_key_folder_path = '/keys/privKey/'  # Replace with the path to your private key folder
 
     try:
         public_key, private_key = get_pem_key_pair_from_folders(public_key_folder_path, private_key_folder_path)
