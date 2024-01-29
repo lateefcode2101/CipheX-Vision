@@ -2,8 +2,11 @@ import base64
 import os
 import subprocess
 import re
-
+import time
 from cryptography.hazmat.primitives import serialization
+from rsaFunctionsForVid import text_to_number, number_to_text, generate_key_pair, encrypt, decrypt
+from encryptFirstChunk import first_chunk
+from ClearFolders import delete_files_in_subfolders
 
 
 def load_public_key_from_pem_file(file_path):
@@ -21,29 +24,33 @@ def get_video_duration(input_file):
         '-v', 'quiet',
         '-of', 'csv=p=0'
     ], capture_output=True, text=True)
-
     return float(result.stdout.strip())
 
 
-def saveFirstVideoChunkBytes(i, output_file):
+def save_first_video_chunk_bytes(i, output_file, action):
     if i == 0:
-
         with open(output_file, 'rb') as f:
             chunk_data = f.read()
-            with open(f'{i + 1}_chunk_bytes.txt', "wb") as fwrite:
+            print("Chunk data read is of size ", len(chunk_data))
+            with open(f'content/ChunkData/{i + 1}_chunk_bytes.txt', "wb") as fwrite:
                 fwrite.write(chunk_data)
+            start_time = time.time()
+            first_chunk(action='encrypt')
+            end_time = time.time()  # Record the end time
+            execution_time = end_time - start_time
+            print(f"Execution time: {execution_time:.6f} seconds")
+
             # Find the position of the first occurrence of "!"
             bmdat_position = chunk_data.find(b'!')
+
             # Ensure "!" is found before attempting to extract bytes
             if bmdat_position != -1:
                 # Extract the 16 bytes after the occurrence of "!"
-                extracted_bytes = chunk_data[
-                                  bmdat_position + len('!'): bmdat_position + len('!') + 16]
-                with open(f'{i + 1}_chunk_bytes_16.txt', "wb") as fwrite16:
-                    fwrite16.write(extracted_bytes)
-                    extracted_bytes_base64 = base64.b64encode(extracted_bytes).rstrip(b'=')
-                    with open('VID.txt', "wb") as fwrite_base64:
-                        fwrite_base64.write(extracted_bytes_base64)
+                extracted_bytes = chunk_data[bmdat_position + len('!'): bmdat_position + len('!') + 16]
+                extracted_bytes_base64 = base64.b64encode(extracted_bytes).rstrip(b'=')
+                with open('content/Vid/VID.txt', "wb") as fwrite_base64:
+                    fwrite_base64.write(extracted_bytes_base64)
+
 
 
 def split_video_ffmpeg(input_file, output_folder, target_chunk_size_MB_param):
@@ -82,16 +89,36 @@ def split_video_ffmpeg(input_file, output_folder, target_chunk_size_MB_param):
             output_file
         ], check=True)
 
-        saveFirstVideoChunkBytes(i, output_file)
-        with open('VID.txt', 'rb') as f:
-            Vid_data = f.read()
+        save_first_video_chunk_bytes(i, output_file, action='encrypt')
+
+
+def get_vid():
+    with open('content/Vid/VID.txt', "rb") as fwrite16:
+        vid_data = fwrite16.read()
+    return vid_data
+
+
+def decryptFirstChunk():
+    first_chunk(action='decrypt')
 
 
 if __name__ == "__main__":
+    folder_path = 'content'  # Replace 'path_to_your_folder' with the actual folder path
+    delete_files_in_subfolders(folder_path)
+    folder_path = 'chunks_of_Original_chunking_Video'  # Replace 'path_to_your_folder' with the actual folder path
+    delete_files_in_subfolders(folder_path)
+    folder_path = 'chunks_of_Videos'  # Replace 'path_to_your_folder' with the actual folder path
+    delete_files_in_subfolders(folder_path)
+
+
     # initializations of variables
-    video_path = 'Original_chunking_Video.mp4'  # Replace with the path to your video file
-    public_key_file_path = "public_key.pem"  # target public key
+    video_path = 'Videos/Original_chunking_Video.mp4'  # Replace with the path to your video file
     target_chunk_size_MB = 1  # Specify the target size of each chunk in megabytes
 
-    loaded_public_key = load_public_key_from_pem_file(public_key_file_path)
     split_video_ffmpeg(video_path, ''.join(["chunks_of_", video_path])[:-4], target_chunk_size_MB)
+    print("\nSplitting complete\n")
+    vid = get_vid()
+    print("Vid is ", vid)
+    decryptFirstChunk()
+    print("decryption complete")
+
