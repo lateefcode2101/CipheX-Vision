@@ -15,7 +15,3 @@ def delete_files_in_subfolders(folder):
 if __name__ == "__main__":
     folder_path = 'content'  # Replace 'path_to_your_folder' with the actual folder path
     delete_files_in_subfolders(folder_path)
-    folder_path = 'chunks_of_Original_chunking_Video'  # Replace 'path_to_your_folder' with the actual folder path
-    delete_files_in_subfolders(folder_path)
-    folder_path = 'chunks_of_Videos'  # Replace 'path_to_your_folder' with the actual folder path
-    delete_files_in_subfolders(folder_path)

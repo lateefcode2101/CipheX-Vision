@@ -16,12 +16,16 @@ def get_mac_address():
 
 
 def get_vid():
-    with open('VID.txt', "rb") as fwrite16:
+    with open('content/Vid/VID.txt', "rb") as fwrite16:
         vid_data = fwrite16.read()
     return vid_data
 
 
 def generate_x_coordinate():
+    """
+generates x_coordinate using encoded system time, process id, and machine id
+    :return: x_coordinate
+    """
     # Collect system-specific information
     system_time = str(time.time()).encode()  # Current system time
     process_id = str(os.getpid()).encode()  # Process ID
@@ -86,7 +90,7 @@ def base64_to_int(base64_encoded):
 ecc_key = ecc_generate_key()
 
 print("ECC number Key:", ecc_key)
-
+print("type of ecc key", type(ecc_key))
 # Convert ECC key to Base64 and back to integer
 int2b64 = int_to_base64(ecc_key)
 print("ECC int_to_base64 is ", int2b64)
