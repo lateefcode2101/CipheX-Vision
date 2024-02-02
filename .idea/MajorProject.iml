@@ -5,6 +5,11 @@
       <excludeFolder url="file://$MODULE_DIR$/sampleTests/Tiger_chunks" />
       <excludeFolder url="file://$MODULE_DIR$/sampleTests/bash_chunks" />
       <excludeFolder url="file://$MODULE_DIR$/sampleTests/chunks" />
+      <excludeFolder url="file://$MODULE_DIR$/chunks_of_tiger_done" />
+      <excludeFolder url="file://$MODULE_DIR$/content/ChunkData" />
+      <excludeFolder url="file://$MODULE_DIR$/content/Videos" />
+      <excludeFolder url="file://$MODULE_DIR$/content/decrypted_chunks" />
+      <excludeFolder url="file://$MODULE_DIR$/content/encrypted_chunks" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
